@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Weather</title>
+<meta charset="utf-8">
+<link type="text/css" rel="stylesheet" href="efect.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body onload="gettingJSON()">
+<div id="myDiv">
+ 	<p id = "cityNameId" class="cityName">
+ 		
+ 	</p>
+</div>
+<div id="myDiv2">
+ 	<p id = "temperatureId" class="temperature">
+ 		
+ 	</p>
+</div>
+<script>
+    function gettingJSON(){
+        $.getJSON("http://api.openweathermap.org/data/2.5/weather?id=3515302&APPID=0827e9ccde7840b33bd4bf8aae027c0c",function(json){
+            var jsonName = JSON.stringify(json.name);
+            jsonName = jsonName.substring(1, jsonName.length-1);
+            $('#cityNameId').text(jsonName);
+
+            var jsonDesc = JSON.stringify(json.weather[0].description)
+            jsonDesc = jsonDesc.substring(1, jsonDesc.length-1);
+            $('#temperatureId').text(jsonDesc);
+            jsonDesc = jsonDesc.replace(/ /g,"_");
+            var weatherImage = "Images/" + jsonDesc + ".jpg";
+            document.body.style.background = 'url(' + weatherImage + ') no-repeat center center';
+
+            var jsonTemp = JSON.stringify(json.main.temp);
+            jsonTemp = jsonTemp - 273.15;
+            $('#temperatureId').append("<br>" + jsonTemp.toFixed(1) + "°");
+
+        });
+    }
+    </script>
+
+</body>
+</html>
